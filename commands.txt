@@ -1,0 +1,11 @@
+make random data file :
+	
+	head -c 2G < /dev/urandom > data.dat
+	
+clear disk buffer cache :
+
+	echo "sync && echo 3 > /proc/sys/vm/drop_caches" | sudo sh
+
+compile :
+	
+	g++ read.c -std=c++11 -O3 -oread
