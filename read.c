@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 			printf("mmap error : %s\n", strerror(errno));
 			return 0;
 		}
-		int mm = madvise(data, NUM_B*B_SIZE, ADVICE | MADV_WILLNEED);
+		int mm = madvise(data, NUM_B*B_SIZE, ADVICE);
 	}
 	
 	auto t1 = chrono::high_resolution_clock::now();
@@ -114,9 +114,7 @@ int main(int argc, char *argv[])
 	{
 		for (int b = 0; b < NUM_B; b++)
 		{	
-			for (int aa = 0; aa < 20; aa++)
-				for (int i = 0; i < B_SIZE; i++)
-					bogus += data[num[b]*B_SIZE + i];
+			bogus += data[num[b]*B_SIZE];
 		}
 	}
 	else
@@ -125,10 +123,7 @@ int main(int argc, char *argv[])
 		{	
 			lseek(fd, num[b]*B_SIZE, SEEK_SET);
 			int nr = read(fd, buf, B_SIZE);
-
-			for (int aa = 0; aa < 20; aa++)
-				for (int i = 0; i < B_SIZE; i++)
-					bogus += buf[i];
+			bogus += buf[0];
 		}
 	}
 
